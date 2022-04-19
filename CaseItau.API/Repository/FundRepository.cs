@@ -3,6 +3,7 @@ using CaseItau.API.Model.DTO;
 using CaseItau.API.Repository.Interface;
 using Dapper;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CaseItau.API.Repository
@@ -62,7 +63,9 @@ namespace CaseItau.API.Repository
                                     F.CNPJ          AS Cnpj,
                                     F.CODIGO_TIPO   AS CodeType,
                                     F.PATRIMONIO    AS Patrimony,
-                                    TP.NOME         AS TypeName
+                                    ''              AS Split,
+                                    TP.NOME         AS Name,
+                                    TP.CODIGO       AS Code
                             FROM FUNDO F
                                 INNER JOIN TIPO_FUNDO TP 
                                         ON F.CODIGO_TIPO = TP.CODIGO
@@ -71,10 +74,14 @@ namespace CaseItau.API.Repository
             using (var connection = _connection.GetConnection())
             {
                 connection.Open();
-                var fund = await connection.QueryFirstOrDefaultAsync<Fund>(query, new { id });
+                var fund = await connection.QueryAsync<Fund, FundType, Fund>(query, param: new { id }, map: (fund, fundType) =>
+                {
+                    fund.Type = fundType;
+                    return fund;
+                }, splitOn: "Split");
                 connection.Close();
                 connection.Dispose();
-                return fund;
+                return fund.FirstOrDefault();
             }
         }
         public async Task<IEnumerable<Fund>> ListFunds()
