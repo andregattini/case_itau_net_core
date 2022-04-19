@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CaseItau.API.DataContext;
+using CaseItau.API.DataContext.Interface;
+using CaseItau.API.Repository;
+using CaseItau.API.Repository.Interface;
+using CaseItau.API.Service;
+using CaseItau.API.Service.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace CaseItau.API
 {
@@ -26,9 +25,15 @@ namespace CaseItau.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<IFundRepository, FundRepository>();
+            services.AddScoped<IFundTypeRepository, FundTypeRepository>();
+            services.AddScoped<IFundService, FundService>();
+            services.AddScoped<IFundTypeService, FundTypeService>();
+            services.AddScoped<string>(provider => Configuration.GetSection("ConnectionString").Value);
+            services.AddScoped<ISqlConnection, SqlConnection>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

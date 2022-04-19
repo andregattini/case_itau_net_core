@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30104.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaseItau.API", "CaseItau.API\CaseItau.API.csproj", "{3707953F-0288-465D-93BC-790A4E80D734}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaseItau.API", "CaseItau.API\CaseItau.API.csproj", "{3707953F-0288-465D-93BC-790A4E80D734}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{24BF4929-7F68-47C4-9562-20F67D6E812E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +20,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3707953F-0288-465D-93BC-790A4E80D734} = {24BF4929-7F68-47C4-9562-20F67D6E812E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {690DD11F-4A91-43EE-89B0-A5586019C18B}
