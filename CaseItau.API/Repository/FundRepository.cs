@@ -114,7 +114,7 @@ namespace CaseItau.API.Repository
                                                 CNPJ = @cnpj,
                                                 CODIGO_TIPO = @type,
                                                 PATRIMONIO = @patrimony
-                                    WHERE CODIGO = @codigo";
+                                    WHERE CODIGO = @code";
             #endregion
             using (var connection = _connection.GetConnection())
             {
