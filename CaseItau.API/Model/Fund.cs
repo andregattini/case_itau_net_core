@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CaseItau.API.Model.DTO
+namespace CaseItau.API.Model
 {
     public class Fund
     {

@@ -1,5 +1,5 @@
 ﻿using CaseItau.API.DataContext.Interface;
-using CaseItau.API.Model.DTO;
+using CaseItau.API.Model;
 using CaseItau.API.Repository.Interface;
 using Dapper;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace CaseItau.API.Model.DTO
+﻿namespace CaseItau.API.Model
 {
     public class FundType
     {

@@ -1,4 +1,4 @@
-﻿using CaseItau.API.Model.DTO;
+﻿using CaseItau.API.Model;
 using CaseItau.API.Repository.Interface;
 using CaseItau.API.Service.Interface;
 using System.Collections.Generic;
