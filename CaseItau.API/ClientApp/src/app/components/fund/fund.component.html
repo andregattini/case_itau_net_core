@@ -1,0 +1,87 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Gerenciamento de fundos Itaú</li>
+  </ol>
+</nav>
+<div class="container">
+  <button type="button" class="btn btn-primary btn-sm mb-1 float">Criar novo fundo</button>
+  <div class="card list-fund overflow-auto">
+    <div class="card-body overflow-auto">
+      <table class="table overflow-auto">
+        <thead>
+          <tr>
+            <th class="overflow-auto" scope="col">Codigo</th>
+            <th class="overflow-auto" scope="col">Nome</th>
+            <th class="overflow-auto" scope="col">Cnpj</th>
+            <th class="overflow-auto" scope="col">Patrimonio</th>
+            <th class="overflow-auto" scope="col">Tipo</th>
+            <th class="overflow-auto " scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fund of funds">
+            <td class="overflow-auto">{{fund.code}}</td>
+            <td class="overflow-auto">{{fund.name}}</td>
+            <td class="overflow-auto">{{fund.cnpj}}</td>
+            <td class="overflow-auto">{{fund.patrimony}}</td>
+            <td class="overflow-auto">{{fund.type.name}}</td>
+            <td>
+              <div class="row">
+                <div class="col-sm-5 overflow-hidden">
+                  <button type="button" class="btn btn-warning btn-sm" (click)="editFund(fund)">Editar</button>
+                </div>
+                <div class="col-sm-5 overflow-hidden">
+                  <button type="button" class="btn btn-danger btn-sm ml-1" (click)="deleteFund(fund)">Deletar</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-primary btn-sm mb-1 float">Salvar Alterações</button>
+    </div>
+  </div>
+
+  <div class="card add-car mt-3">
+    <h5 class="card-header">Adicionar/Atualizar fundo</h5>
+    <div class="card-body">
+      <form id="add-form" (ngSubmit)="f.form.valid && CreateFund(f)" #f="ngForm" novalidate>
+        <div class="form-group">
+          <label for="model">Codigo</label>
+          <input type="text" [(ngModel)]="fund.code" id="code" name="code" #code="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted}" placeholder="Codigo do fundo">
+        </div>
+        <div class="form-group">
+          <label for="color">Nome</label>
+          <input type="text" [(ngModel)]="fund.name" id="name" name="name" #name="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted }" placeholder="Nome do fundo">
+        </div>
+        <div class="form-group">
+          <label for="cnpj">Cnpj</label>
+          <input type="text" [(ngModel)]="fund.cnpj" id="cnpj" name="cnpj" ng-pattern="/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/" ui-mask="99.999.999/9999-99" #cnpj="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted  }" placeholder="Cnpj">
+        </div>
+        <div class="form-group">
+          <label for="patrimony">Patrimonio</label>
+          <input type="number" [(ngModel)]="fund.patrimony" id="patrimony" name="patrimony" #patrimony="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted }" placeholder="Patrimonio">
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label for="type">Tipo de fundo</label>
+          </div>
+          <select matNativeControl (change)="selectChangeHandler($event)">
+            <option value="" selected></option>
+            <option *ngFor="let type of types" [ngValue]="type">{{type.name}}</option>
+          </select>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-sm-1 overflow-hidden">
+            <button type="submit" class="btn btn-primary btn-add-car">Salvar</button>
+          </div>
+          <div class="col-sm-1 overflow-hidden">
+            <button type="reset" class="btn btn-secondary btn-add-car" (click)="cleanForm(f)">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

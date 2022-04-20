@@ -1,3 +1,5 @@
+
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -14,7 +16,9 @@ namespace CaseItau.API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseSetting(
+                       WebHostDefaults.PreventHostingStartupKey, "true")
+                    .UseStartup<Startup>();
                 });
     }
 }
