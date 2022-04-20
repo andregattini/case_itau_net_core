@@ -44,7 +44,11 @@ namespace CaseItau.API.Controllers
         public async Task<IActionResult> Post([FromBody] Fund fund)
         {
             var createdFund = await _fundService.CreateFund(fund);
-            return new OkObjectResult(createdFund);
+
+            if (createdFund is null)
+                return Conflict(new { error = "this fund code or CNPJ already exists." });
+
+            return Created(string.Empty, createdFund);
         }
 
         // PUT: api/Fund/ITAUTESTE01

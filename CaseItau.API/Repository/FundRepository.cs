@@ -3,7 +3,6 @@ using CaseItau.API.Model;
 using CaseItau.API.Repository.Interface;
 using Dapper;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CaseItau.API.Repository
@@ -54,7 +53,7 @@ namespace CaseItau.API.Repository
                 return rowsAffected == 1;
             }
         }
-        public async Task<Fund> GetFundById(string id)
+        public async Task<IEnumerable<Fund>> SearchFunds(string code = null, string cnpj = null, int? type = null)
         {
             #region query
             string query = @"SELECT 
@@ -69,50 +68,26 @@ namespace CaseItau.API.Repository
                             FROM FUNDO F
                                 INNER JOIN TIPO_FUNDO TP 
                                         ON F.CODIGO_TIPO = TP.CODIGO
-                            WHERE F.CODIGO = @id";
+                            WHERE 1 = 1";
+            if (!string.IsNullOrEmpty(code))
+                query += $" AND F.CODIGO = @code ";
+            if (!string.IsNullOrEmpty(cnpj))
+                query += $" AND F.CNPJ = @cnpj";
+            if (type != null)
+                query += $" AND TP.CODIGO = @type";
             #endregion
             using (var connection = _connection.GetConnection())
             {
                 connection.Open();
-                var fund = await connection.QueryAsync<Fund, FundType, Fund>(query, param: new { id }, map: (fund, fundType) =>
-                {
-                    fund.Type = fundType;
-                    return fund;
-                }, splitOn: "Split");
+                var funds = await connection.QueryAsync<Fund, FundType, Fund>(query, param: new { code, cnpj, type }, map: (fund, fundType) =>
+                 {
+                     fund.Type = fundType;
+                     return fund;
+                 }, splitOn: "Split");
                 connection.Close();
                 connection.Dispose();
-                return fund.FirstOrDefault();
+                return funds;
             }
-        }
-        public async Task<IEnumerable<Fund>> ListFunds()
-        {
-            IEnumerable<Fund> funds = new List<Fund>();
-            #region query
-            string query = @"SELECT 
-                                    F.CODIGO        AS Code,
-                                    F.NOME          AS Name,
-                                    F.CNPJ          AS Cnpj,
-                                    F.CODIGO_TIPO   AS CodeType,
-                                    F.PATRIMONIO    AS Patrimony,
-                                    ''              AS Split,
-                                    TP.NOME         AS Name,
-                                    TP.CODIGO       AS Code
-                            FROM FUNDO F
-                                INNER JOIN TIPO_FUNDO TP 
-                                        ON F.CODIGO_TIPO = TP.CODIGO";
-            #endregion
-            using (var connection = _connection.GetConnection())
-            {
-                connection.Open();
-                funds = await connection.QueryAsync<Fund, FundType, Fund>(query, map: (fund, fundType) =>
-                {
-                    fund.Type = fundType;
-                    return fund;
-                }, splitOn: "Split");
-                connection.Close();
-                connection.Dispose();
-            }
-            return funds;
         }
         public async Task<Fund> UpdateFund(Fund fund)
         {

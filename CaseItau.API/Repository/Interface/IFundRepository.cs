@@ -7,16 +7,10 @@ namespace CaseItau.API.Repository.Interface
     public interface IFundRepository
     {
         /// <summary>
-        /// List all existents funds
+        /// search Funds
         /// </summary>
         /// <returns>Collection of Fund</returns>
-        public Task<IEnumerable<Fund>> ListFunds();
-        /// <summary>
-        /// search a fund by id
-        /// </summary>
-        /// <param name="id">code property</param>
-        /// <returns>fund object</returns>
-        public Task<Fund> GetFundById(string id);
+        public Task<IEnumerable<Fund>> SearchFunds(string code = null, string cnpj = null, int? type = null);
         /// <summary>
         /// Create a new fund
         /// </summary>
@@ -35,7 +29,5 @@ namespace CaseItau.API.Repository.Interface
         /// <param name="id">id of the fund who will be deleted</param>
         /// <returns>boolean</returns>
         public Task<bool> DeleteFund(string id);
-
-
     }
 }

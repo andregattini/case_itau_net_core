@@ -2,6 +2,7 @@
 using CaseItau.API.Repository.Interface;
 using CaseItau.API.Service.Interface;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CaseItau.API.Service
@@ -16,10 +17,10 @@ namespace CaseItau.API.Service
 
         public async Task<Fund> CreateFund(Fund fund)
         {
-            var existentFund = await GetFundById(fund.Code);
+            var existentFund = await _fundRepository.SearchFunds();
 
-            if (existentFund != null)
-                return existentFund;
+            if (existentFund.Any(x => x.Code == fund.Code || x.Cnpj == fund.Cnpj))
+                return null;
 
             return await _fundRepository.CreateFund(fund);
         }
@@ -32,15 +33,24 @@ namespace CaseItau.API.Service
 
             return await _fundRepository.DeleteFund(id);
         }
+        public async Task<Fund> GetFundByCnpj(string cnpj)
+        {
+            if (string.IsNullOrEmpty(cnpj))
+                return null;
+
+            var funds = await _fundRepository.SearchFunds(cnpj: cnpj);
+            return funds?.FirstOrDefault();
+        }
         public async Task<Fund> GetFundById(string id)
         {
             if (string.IsNullOrEmpty(id))
                 return null;
 
-            return await _fundRepository.GetFundById(id);
+            var funds = await _fundRepository.SearchFunds(code: id);
+            return funds?.FirstOrDefault();
         }
         public async Task<IEnumerable<Fund>> ListFunds()
-         => await _fundRepository.ListFunds();
+         => await _fundRepository.SearchFunds();
         public async Task<Fund> UpdateFund(Fund fund)
         {
             var existentFund = await GetFundById(fund.Code);
