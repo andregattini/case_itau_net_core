@@ -4,7 +4,26 @@
   </ol>
 </nav>
 <div class="container">
-  <button type="button" class="btn btn-primary btn-sm mb-1 float">Criar novo fundo</button>
+
+  <div class="card add-car mt-3">
+    <div class="card-body">
+      <form id="search-form" (ngSubmit)="p.form.valid && getFundByCode()" #p="ngForm" novalidate>
+        <div class="form-group col-sm-3">
+          <input type="text" [(ngModel)]="fund.code" id="search-code" name="search" #code="ngModel" class="form-control" placeholder="Codigo do fundo">
+        </div>
+        <div class="row mt-3">
+          <div class="col-sm-1 overflow-hidden">
+            <button type="submit" class="btn btn-primary ">pesquisar</button>
+          </div>
+          <div class="col-sm-3 overflow-hidden">
+            <button type="button" class="btn btn-light btn-add-car" (click)="getFunds()">Limpar busca</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-primary btn-sm mb-1 mt-1 ml-20">Criar novo fundo</button>
   <div class="card list-fund overflow-auto">
     <div class="card-body overflow-auto">
       <table class="table overflow-auto">
@@ -43,7 +62,7 @@
   </div>
 
   <div class="card add-car mt-3">
-    <h5 class="card-header">Adicionar/Atualizar fundo</h5>
+    <h5 class="card-header">Adicionar fundo</h5>
     <div class="card-body">
       <form id="add-form" (ngSubmit)="f.form.valid && CreateFund(f)" #f="ngForm" novalidate>
         <div class="form-group">
@@ -56,7 +75,7 @@
         </div>
         <div class="form-group">
           <label for="cnpj">Cnpj</label>
-          <input type="text" [(ngModel)]="fund.cnpj" id="cnpj" name="cnpj" ng-pattern="/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/" ui-mask="99.999.999/9999-99" #cnpj="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted  }" placeholder="Cnpj">
+          <input type="text" [(ngModel)]="fund.cnpj" id="cnpj" name="cnpj" #cnpj="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted  }" maxlength="18" placeholder="Cnpj" mask="00.000.000/0000-00">
         </div>
         <div class="form-group">
           <label for="patrimony">Patrimonio</label>

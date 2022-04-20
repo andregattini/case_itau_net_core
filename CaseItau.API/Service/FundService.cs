@@ -1,4 +1,5 @@
-﻿using CaseItau.API.Model;
+﻿using CaseItau.API.Helper.Extension;
+using CaseItau.API.Model;
 using CaseItau.API.Repository.Interface;
 using CaseItau.API.Service.Interface;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace CaseItau.API.Service
         {
             var existentFund = await _fundRepository.SearchFunds();
 
-            if (existentFund.Any(x => x.Code == fund.Code || x.Cnpj == fund.Cnpj))
+            if (existentFund.Any(x => x.Code == fund.Code || x.Cnpj.OnlyNumbers() == fund.Cnpj.OnlyNumbers()))
                 return null;
 
             return await _fundRepository.CreateFund(fund);

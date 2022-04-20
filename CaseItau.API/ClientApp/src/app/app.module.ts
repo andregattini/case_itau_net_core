@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { FetchDataComponent } from './components/fetch-data/fetch-data.component';
 import { FundComponent } from './components/fund/fund.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { FundComponent } from './components/fund/fund.component';
     RouterModule.forRoot([
       { path: '', redirectTo: '/fund', pathMatch: 'full' },
       { path: 'fund', component: FundComponent, },
-    ])
+    ]),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

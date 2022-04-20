@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CaseItau.API.Helper.CustomAttributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace CaseItau.API.Model
 {
@@ -9,6 +10,7 @@ namespace CaseItau.API.Model
         [Required]
         public string Name { get; set; }
         [Required]
+        [CnpjValidation]
         public string Cnpj { get; set; }
         [Required]
         public decimal? Patrimony { get; set; }

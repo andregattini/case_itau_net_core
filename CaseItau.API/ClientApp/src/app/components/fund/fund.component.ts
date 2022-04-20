@@ -4,8 +4,7 @@ import { FundService } from 'src/app/services/fundService';
 import { FundType } from 'src/app/models/fund-type';
 import { FundTypeService } from 'src/app/services/fundTypeService';
 import { NgForm } from '@angular/forms';
-
-
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-fund',
@@ -13,7 +12,7 @@ import { NgForm } from '@angular/forms';
 })
 export class FundComponent implements OnInit {
   fund = {} as Fund;
-  funds = [] as Fund[];
+  funds = [] as Fund[]; 
   types = [] as FundType[];
   type = {} as FundType;
 
@@ -52,12 +51,19 @@ export class FundComponent implements OnInit {
       this.funds = funds;
     });
   }
+
   getTypes() {
     this.typeService.getFundsTypes().subscribe((types: FundType[]) => {
       this.types = types;
     });
   }
 
+  getFundByCode() {
+    this.fundService.getFundByCode(this.fund.code).subscribe((fund: Fund) => {
+      this.funds = [] as Fund[];
+      this.funds.push(fund);
+    });
+  }
   // deleta um carro
   deleteFund(fund: Fund) {
     this.fundService.deleteFund(fund.code).subscribe(() => {
