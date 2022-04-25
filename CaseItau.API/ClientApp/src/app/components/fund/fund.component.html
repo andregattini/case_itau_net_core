@@ -9,7 +9,7 @@
     <div class="card-body">
       <form id="search-form" (ngSubmit)="p.form.valid && getFundByCode()" #p="ngForm" novalidate>
         <div class="form-group col-sm-3">
-          <input type="text" [(ngModel)]="fund.code" id="search-code" name="search" #code="ngModel" class="form-control" placeholder="Codigo do fundo">
+          <input type="text" [(ngModel)]="fundSearch.code" id="search-code" name="search" #code="ngModel" class="form-control" placeholder="Codigo do fundo">
         </div>
         <div class="row mt-3">
           <div class="col-sm-1 overflow-hidden">
@@ -23,7 +23,6 @@
     </div>
   </div>
 
-  <button type="button" class="btn btn-primary btn-sm mb-1 mt-1 ml-20">Criar novo fundo</button>
   <div class="card list-fund overflow-auto">
     <div class="card-body overflow-auto">
       <table class="table overflow-auto">
@@ -57,14 +56,13 @@
           </tr>
         </tbody>
       </table>
-      <button type="button" class="btn btn-primary btn-sm mb-1 float">Salvar Alterações</button>
     </div>
   </div>
 
   <div class="card add-car mt-3">
     <h5 class="card-header">Adicionar fundo</h5>
     <div class="card-body">
-      <form id="add-form" (ngSubmit)="f.form.valid && CreateFund(f)" #f="ngForm" novalidate>
+      <form id="add-form" (ngSubmit)="f.form.valid && createFund(f)" #f="ngForm" novalidate>
         <div class="form-group">
           <label for="model">Codigo</label>
           <input type="text" [(ngModel)]="fund.code" id="code" name="code" #code="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted}" placeholder="Codigo do fundo">
@@ -103,4 +101,73 @@
     </div>
   </div>
 
+  <div class="card add-car mt-3">
+    <h5 class="card-header">Editar fundo</h5>
+    <div class="card-body">
+      <form id="edit-form" (ngSubmit)="e.form.valid && updateFund(e)" #e="ngForm" novalidate>
+        <div class="form-group">
+          <label for="model">Codigo</label>
+          <input type="text" [(ngModel)]="fundEdit.code" id="code" name="code" #code="ngModel" required class="form-control" disabled placeholder="Codigo do fundo">
+        </div>
+        <div class="form-group">
+          <label for="color">Nome</label>
+          <input type="text" [(ngModel)]="fundEdit.name" id="name" name="name" #name="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': e.submitted }" placeholder="Nome do fundo">
+        </div>
+        <div class="form-group">
+          <label for="cnpj">Cnpj</label>
+          <input type="text" [(ngModel)]="fundEdit.cnpj" id="cnpj" name="cnpj" #cnpj="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': e.submitted  }" maxlength="18" placeholder="Cnpj" mask="00.000.000/0000-00">
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label for="type">Tipo de fundo</label>
+          </div>
+          <select matNativeControl (change)="selectChangeHandler($event)">
+            <option value="" selected></option>
+            <option *ngFor="let type of types" [ngValue]="type">{{type.name}}</option>
+          </select>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-sm-1 overflow-hidden">
+            <button type="submit" class="btn btn-primary btn-add-car">Salvar</button>
+          </div>
+          <div class="col-sm-1 overflow-hidden">
+            <button type="reset" class="btn btn-secondary btn-add-car" (click)="cleanForm(f)">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card add-car mt-3">
+    <h5 class="card-header">Editar Patrimonio do fundo</h5>
+    <p class="card-header">O Valor digitado será adicionado ou subtrado do patrimonio já existente</p>
+    <div class="card-body">
+      <form id="patrimony-form" (ngSubmit)="pe.form.valid && updatePatrimony(pe)" #pe="ngForm" novalidate>
+        <div class="form-group">
+          <label for="model">Codigo</label>
+          <input type="text" [(ngModel)]="fundEdit.code" id="code" name="code" #code="ngModel" required class="form-control" disabled placeholder="Codigo do fundo">
+        </div>
+        <div class="form-group">
+          <label for="color">Nome</label>
+          <input type="text" [(ngModel)]="fundEdit.name" id="name" name="name" #name="ngModel" required class="form-control" disabled placeholder="Nome do fundo">
+        </div>
+        <div class="form-group">
+          <label for="cnpj">Cnpj</label>
+          <input type="text" [(ngModel)]="fundEdit.cnpj" id="cnpj" name="cnpj" #cnpj="ngModel" required class="form-control" disabled maxlength="18" placeholder="Cnpj" mask="00.000.000/0000-00">
+        </div>
+        <div class="form-group">
+          <label for="patrimony">Patrimonio</label>
+          <input type="number" [(ngModel)]="fundEdit.patrimony" id="patrimony" name="patrimony" #patrimony="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': pe.submitted }" placeholder="Patrimonio">
+        </div>
+        <div class="row mt-3">
+          <div class="col-sm-1 overflow-hidden">
+            <button type="submit" class="btn btn-primary btn-add-car">Salvar</button>
+          </div>
+          <div class="col-sm-1 overflow-hidden">
+            <button type="reset" class="btn btn-secondary btn-add-car" (click)="cleanForm(f)">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

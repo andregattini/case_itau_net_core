@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class FundComponent implements OnInit {
   fund = {} as Fund;
+  fundSearch = {} as Fund;
+  fundEdit = {} as Fund;
   funds = [] as Fund[]; 
   types = [] as FundType[];
   type = {} as FundType;
@@ -30,7 +32,7 @@ export class FundComponent implements OnInit {
   }
 
   // defini se um fundo será criado ou atualizado
-  CreateFund(form: NgForm) {
+  createFund(form: NgForm) {
     this.fund.type = this.types.find(type => this.type.name === type.name) as FundType;
     console.log(this.fund)
 
@@ -39,8 +41,8 @@ export class FundComponent implements OnInit {
       });
   }
 
-  UpdateFund(form: NgForm) {
-    this.fundService.updateFund(this.fund).subscribe(() => {
+  updateFund(form: NgForm) {
+    this.fundService.updateFund(this.fundEdit).subscribe(() => {
       this.cleanForm(form);
     });
   }
@@ -49,6 +51,7 @@ export class FundComponent implements OnInit {
   getFunds() {
     this.fundService.getFunds().subscribe((funds: Fund[]) => {
       this.funds = funds;
+      this.fundSearch = {} as Fund;
     });
   }
 
@@ -59,7 +62,7 @@ export class FundComponent implements OnInit {
   }
 
   getFundByCode() {
-    this.fundService.getFundByCode(this.fund.code).subscribe((fund: Fund) => {
+    this.fundService.getFundByCode(this.fundSearch.code).subscribe((fund: Fund) => {
       this.funds = [] as Fund[];
       this.funds.push(fund);
     });
@@ -70,10 +73,15 @@ export class FundComponent implements OnInit {
       this.getFunds();
     });
   }
+  updatePatrimony(form: NgForm) {
+    this.fundService.updateFundPatrimony(this.fundEdit).subscribe(() => {
+      this.cleanForm(form);
+    });
+  }
 
   // copia o fundo para ser editado.
   editFund(fund: Fund) {
-    this.fund = { ...fund };
+    this.fundEdit = { ...fund };
   }
 
   // limpa o formulario

@@ -52,7 +52,7 @@ export class FundService {
   }
 
   updateFundPatrimony(fund: Fund): Observable<Fund> {
-    return this.httpClient.patch<Fund>(this.url + 'api/fund' + fund.code + '/patrimony', JSON.stringify(fund.patrimony), this.httpOptions)
+    return this.httpClient.patch<Fund>(this.url + 'api/fund/' + fund.code + '/patrimony', JSON.stringify(fund.patrimony), this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError)
